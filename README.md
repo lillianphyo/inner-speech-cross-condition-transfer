@@ -1,6 +1,6 @@
 # Cross-condition transfer learning for EEG-based inner speech classification
 
-Code, per-participant results and figure scripts for the manuscript *Cross-Condition Transfer Learning for EEG-Based Inner Speech Classification: A Controlled Evaluation of Neural Networks and Temporal Segmentation* (K. P. P. San, Y. Sugiura, T. Shimamura; submitted to *Sensors*).
+Code, per-participant results and figure scripts for the manuscript *Cross-Condition Transfer Learning for EEG-Based Inner Speech Classification: A Controlled Evaluation of Neural Networks and Temporal Segmentation* (K. P. P. San, Y. Sugiura, T. Shimamura; in preparation for *Sensors*).
 
 The study asks whether a decoder trained on overt (pronounced) speech transfers to inner speech on OpenNeuro ds003626, under an evaluation in which no test trial enters training or model selection. It compares bidirectional transfer, target-domain calibration and fine-tuning, MMD alignment, two convolutional networks against CSP+LDA and a Riemannian pipeline, and four trial windows, each with shuffled-label controls.
 Every number in the paper comes from a per-participant CSV under `runs/`, made by one of the commands below. The `--summarize` form of each script rebuilds the summary table from those CSVs.

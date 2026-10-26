@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: If you use this code or its results, please cite the manuscript.
+title: Cross-condition transfer learning for EEG-based inner speech classification
+type: software
+license: MIT
+repository-code: https://github.com/lillianphyo/inner-speech-cross-condition-transfer
+authors:
+  - family-names: San
+    given-names: Khin Pyae Phyo
+  - family-names: Sugiura
+    given-names: Yosuke
+  - family-names: Shimamura
+    given-names: Tetsuya
