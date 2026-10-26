@@ -1,0 +1,25 @@
+{
+  "pool": [
+    "sub-01",
+    "sub-02",
+    "sub-03",
+    "sub-04",
+    "sub-05",
+    "sub-06",
+    "sub-07",
+    "sub-08",
+    "sub-09",
+    "sub-10"
+  ],
+  "training": {
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "num_epochs": 100,
+    "patience": 15,
+    "weight_decay": 0.0001
+  },
+  "window": [
+    0.5,
+    3.0
+  ]
+}

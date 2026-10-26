@@ -1,0 +1,32 @@
+{
+  "band": null,
+  "sessions": [
+    "ses-01",
+    "ses-02",
+    "ses-03"
+  ],
+  "train_fractions": [
+    1.0
+  ],
+  "training": {
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "num_epochs": 100,
+    "patience": 15,
+    "weight_decay": 0.0001
+  },
+  "windows": {
+    "action": [
+      0.5,
+      3.0
+    ],
+    "cue": [
+      -0.5,
+      0.5
+    ],
+    "full": [
+      null,
+      null
+    ]
+  }
+}

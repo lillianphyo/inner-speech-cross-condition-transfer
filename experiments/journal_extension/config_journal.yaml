@@ -1,0 +1,83 @@
+# Configuration for Journal Extension Experiments
+# Dataset: OpenNeuro ds006104 (Moreira et al., 2025)
+# https://openneuro.org/datasets/ds006104/versions/1.0.1
+
+data_root: "auto"
+study: "Study2"
+task_type: "phonemes"
+condition: "control"
+
+# Preprocessing (same as conference paper)
+preprocessing:
+  l_freq: 1.0
+  h_freq: 40.0
+  epoch_tmin: -0.5
+  epoch_tmax: 0.2
+  baseline: [-0.5, -0.3]
+  reject_threshold: null
+  sfreq: null
+  apply_ica: false
+
+# Training parameters
+training:
+  batch_size: 16
+  num_epochs: 100
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  patience: 15
+  num_workers: 0
+
+# Models to evaluate (subset for faster experiments)
+models_to_evaluate:
+  - "EEGNet"
+  - "DeepConvNet"
+  - "ShallowConvNet"
+  - "EEGConformer"
+
+# Classification tasks
+tasks:
+  - name: "phoneme"
+    n_classes: 20
+    label_type: "phoneme"
+  - name: "place"
+    n_classes: 2
+    label_type: "place"
+  - name: "voicing"
+    n_classes: 2
+    label_type: "voicing"
+
+# K-Fold Cross-Validation settings
+kfold:
+  n_splits: 5
+  shuffle: true
+  random_state: 42
+
+# Leave-One-Subject-Out settings
+loso:
+  test_subjects: "all"  # Test on all subjects
+
+# Domain Adaptation settings
+domain_adaptation:
+  source_study: "Study2"
+  target_study: "Study1"
+  methods:
+    - "baseline"      # No adaptation
+    - "mmd"           # Maximum Mean Discrepancy
+    - "coral"         # Correlation Alignment
+    - "dann"          # Domain-Adversarial Neural Network
+
+# Hierarchical/Multi-task settings
+hierarchical:
+  tasks:
+    - "place"
+    - "voicing"
+    - "manner"
+  multi_task_weight: 0.5
+
+# Output paths
+output:
+  base_dir: "results/journal_extension"
+  kfold_dir: "results/journal_extension/kfold_cv"
+  loso_dir: "results/journal_extension/subject_specific"
+  domain_dir: "results/journal_extension/domain_adaptation"
+  hierarchical_dir: "results/journal_extension/hierarchical_multitask"

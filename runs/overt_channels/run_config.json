@@ -1,0 +1,15 @@
+{
+  "channel_seed": 0,
+  "n_random": 3,
+  "training": {
+    "batch_size": 32,
+    "learning_rate": 0.001,
+    "num_epochs": 100,
+    "patience": 15,
+    "weight_decay": 0.0001
+  },
+  "window": [
+    0.5,
+    3.0
+  ]
+}
