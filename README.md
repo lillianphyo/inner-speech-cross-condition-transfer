@@ -31,7 +31,7 @@ Python 3.11.15, PyTorch 2.11.0 + CUDA 12.8, MNE-Python 1.12.1, scikit-learn 1.9.
 
 ```
 pip install -r requirements.txt
-python -m pytest tests -q          # 126 tests, includes the leakage and split checks
+python -m pytest tests -q          # 131 tests, includes the leakage and split checks
 ```
 
 ## 3. Splits, seeds and models
@@ -45,27 +45,30 @@ python -m pytest tests -q          # 126 tests, includes the leakage and split c
 
 Run from the repository root with `--data-root <ds003626 root>`; every script is under `experiments/inner_speech/`. Add `--device cuda` for the networks. Rebuild a summary with the same script, `--out-dir`, and `--summarize`.
 
+Table and figure numbers follow the manuscript revision of 2026-10-27.
+
 | Paper item | Output directory | Command |
 |---|---|---|
 | Table 3, Table A1, Figures 2–5 (networks) | `runs/honest_transfer` | `exp05_honest_transfer.py --models EEGNet ShallowConvNet --seeds 0 1 2 3 4` |
 | Table 3, Table A1 (covariance) | `runs/honest_transfer` | `exp05_honest_transfer.py --models CSP+LDA Riemannian --seeds 0 1 2` |
-| Held-out session table, Figure 3 | `runs/session_split` | `exp08_session_split.py --windows action --arms source_only shuffle_source target_only transfer shuffle_transfer reciprocal --models EEGNet ShallowConvNet CSP+LDA Riemannian` |
-| Fine-tuning table, effect table | `runs/finetune` | `exp05_honest_transfer.py --out-dir runs/finetune --windows action --arms target_only finetune shuffle_finetune --models EEGNet ShallowConvNet --seeds 0 1 2` |
-| LOSO, Figures 3–4 | `runs/loso` | `exp07_loso.py --models EEGNet ShallowConvNet CSP+LDA Riemannian` |
-| 8–30 Hz table, Figure 5b | `runs/honest_transfer_8_30` | `exp05_honest_transfer.py --out-dir runs/honest_transfer_8_30 --band 8 30 --windows action --arms source_only shuffle_source target_only transfer shuffle_transfer reciprocal --models EEGNet ShallowConvNet CSP+LDA Riemannian --seeds 0 1 2` |
-| 30–100 Hz table, Figure 5b | `runs/honest_transfer_30_100` | same with `--band 30 100 --out-dir runs/honest_transfer_30_100` |
-| Channel subsets, Figure 5a, Table B1 | `runs/overt_channels` | `exp06_overt_channels.py` |
-| External-electrode table | `runs/exg_arms` | `exp10_exg_arms.py --windows action --signals exg lips scalp_regressed --seeds 0 1 2` |
-| Concentration-window table | `runs/concentration` | `exp05_honest_transfer.py --out-dir runs/concentration --windows concentration` (networks seeds 0–4, covariance 0–2) |
-| No-ICA table | `runs/noica` | `raw_epochs.py --raw-root <ds003626 root> --out-root <new tree>`, then `exp05_honest_transfer.py --data-root <new tree> --out-dir runs/noica --windows action --train-fractions 1.0 --arms source_only shuffle_source target_only shuffle_target transfer shuffle_transfer reciprocal --models EEGNet ShallowConvNet CSP+LDA Riemannian --seeds 0 1 2` |
-| Second-dataset table | `runs/second_dataset` | `exp09_second_dataset.py --data-root <ds006104 root>` |
-| Figures | `figures/sensors/` | `octave --eval "run('make_figN.m')"` for N = 2…5; scripts read the CSVs above |
+| Table 5 (held-out session), Figure 3 | `runs/session_split` | `exp08_session_split.py --windows action --arms source_only shuffle_source target_only transfer shuffle_transfer reciprocal --models EEGNet ShallowConvNet CSP+LDA Riemannian` |
+| Table 7 (fine-tuning), Table 6 (paired effects) | `runs/finetune` | `exp05_honest_transfer.py --out-dir runs/finetune --windows action --arms target_only finetune shuffle_finetune --models EEGNet ShallowConvNet --seeds 0 1 2` |
+| Table 8 (LOSO), Figures 3–4 | `runs/loso` | `exp07_loso.py --models EEGNet ShallowConvNet CSP+LDA Riemannian` |
+| Table 10 (8–30 Hz), Figure 5b | `runs/honest_transfer_8_30` | `exp05_honest_transfer.py --out-dir runs/honest_transfer_8_30 --band 8 30 --windows action --arms source_only shuffle_source target_only transfer shuffle_transfer reciprocal --models EEGNet ShallowConvNet CSP+LDA Riemannian --seeds 0 1 2` |
+| Table 9 (30–100 Hz), Figure 5b | `runs/honest_transfer_30_100` | same with `--band 30 100 --out-dir runs/honest_transfer_30_100` |
+| Table A4 (channel subsets), Figure 5a | `runs/overt_channels` | `exp06_overt_channels.py` |
+| Table 11 (external electrodes) | `runs/exg_arms` | `exp10_exg_arms.py --windows action --signals exg lips scalp_regressed --seeds 0 1 2` |
+| Table A2 (concentration window) | `runs/concentration` | `exp05_honest_transfer.py --out-dir runs/concentration --windows concentration` (networks seeds 0–4, covariance 0–2) |
+| Table 4 (no ICA) | `runs/noica` | `raw_epochs.py --raw-root <ds003626 root> --out-root <new tree>`, then `exp05_honest_transfer.py --data-root <new tree> --out-dir runs/noica --windows action --train-fractions 1.0 --arms source_only shuffle_source target_only shuffle_target transfer shuffle_transfer reciprocal --models EEGNet ShallowConvNet CSP+LDA Riemannian --seeds 0 1 2` |
+| Table A3 (second dataset) | `runs/second_dataset` | `exp09_second_dataset.py --data-root <ds006104 root>` |
+| Filter spread between neighbouring epochs (Section 2.3) | printed | `filter_spread.py --raw-root <ds003626 root> --subject sub-01 --session ses-01`, and `--subject sub-05 --session ses-02` |
+| Figures | `figures/sensors/` | `octave --eval "run('make_figN.m')"`; scripts read the CSVs above. Paper Figure 2 = `make_fig5.m`, Figure 3 = `make_fig2.m`, Figure 4 = `make_fig3.m`, Figure 5 = `make_fig4.m` |
 
 The published runs split participants across two GPU and two CPU workers; the split does not change any result, since every row is a deterministic function of participant, model, arm and seed for the covariance pipelines and of the seed for the networks up to GPU non-determinism (about 2.5 percentage points between repeated network runs).
 
 ## 5. Effect sizes and detectable effects
 
-The paired effect table and the minimum detectable effects (manuscript Equation for the minimum detectable effect) are computed from `runs/honest_transfer` and `runs/finetune` per participant, mean over seeds, with a 95 % t-interval and MDE = (t₀.₉₅,₉ + t₀.₈₀,₉)·s_d/√10.
+The paired effect table and the minimum detectable effects (manuscript Equation for the minimum detectable effect) are computed from `runs/honest_transfer` and `runs/finetune` per participant, mean over seeds, with a 95 % t-interval and MDE = (t₀.₉₅,₉ + t₀.₈₀,₉)·s_d/√10. The MDE is a t-test approximation, an approximate reference only: the paper's exact Wilcoxon tests and Holm correction need somewhat larger effects.
 
 ```
 python experiments/inner_speech/paper_tables.py --runs runs --out-dir tables
@@ -88,4 +91,5 @@ writes `tables/effect_rows.tex` (rows of the paired-effect table) and `tables/su
 
 ## 7. Known gaps
 
+- The 0.5–100 Hz zero-phase band-pass (6759 taps at 1024 Hz, ±3.3 s) is longer than the 1.7–2.1 s gap between epochs, in the derivatives and in the rebuild, so neighbouring epochs are not strictly independent. `filter_spread.py` measures it: a trial's in-band activity is 0.1–0.2 % (at most 0.6 %) of the norm of each neighbouring epoch, and adjacent trials share a class at the chance rate (0.234 over 5550 pairs). The held-out-session arms are free of it.
 - The independent component analysis of the derivatives was fitted by the dataset authors once per session on all its trials (verified from the rank of the released epochs). `experiments/inner_speech/raw_epochs.py` rebuilds the epochs from the raw BDF files without it, into a separate tree; the derivatives stay the default and are never modified. Select the variant only through `--data-root`.
