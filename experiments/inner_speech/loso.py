@@ -12,8 +12,8 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from experiments.inner_speech.honest_transfer import CHANCE, fit_and_score
-from experiments.trackb_4word_floor.floor import shuffle_labels
 from src.data.leakage import assert_disjoint
+from src.data.transforms import shuffle_labels
 
 ARMS = ("inner_loso", "overt_loso", "transfer_loso", "shuffle_inner_loso")
 CONDITION = {"inner_loso": "inner_speech", "overt_loso": "pronounced", "transfer_loso": "pronounced",

@@ -1,6 +1,6 @@
 """Within-subject cross-condition transfer on ds003626 with a real train/test separation.
 
-Answers the TNSRE-2026-00496 review: every arm that reports inner-speech accuracy scores the
+Every arm that reports inner-speech accuracy scores the
 same held-out inner-speech trials, model selection uses a validation split that is never the
 test split, and the pronounced and inner sets are checked to share no trial.
 """
@@ -21,9 +21,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from experiments.inner_speech.classical import CLASSICAL, classical_fit_and_score
 from experiments.inner_speech.mmd import mmd_regularizer
 from experiments.inner_speech.exp02_cross_dataset import evaluate_model, get_model, train_model
-from experiments.trackb_4word_floor.floor import shuffle_labels, standardize
 from src.data.leakage import assert_disjoint
 from src.data.splits import split_indices
+from src.data.transforms import shuffle_labels, standardize
 
 N_CLASSES = 4
 CHANCE = 1.0 / N_CLASSES

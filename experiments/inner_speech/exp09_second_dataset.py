@@ -2,10 +2,10 @@
 
 Per subject: overt-only (60/20/20 stratified) with its shuffled-label control, on the binary place
 and voicing tasks. Across subjects: leave-one-subject-out (validation = next subject) on place,
-voicing and the 20-class syllable task, with its shuffled control. Both broadband (the 1--40 Hz
-preprocessing of the channel-selection study) and 8--30 Hz. Same decoders, normalisation and
-statistics as exp05/exp07. Epochs come from the per-subject cache of the channel-selection study
-(500 Hz, -0.5 to 0.2 s around speech onset, scalp channels common to every subject).
+voicing and the 20-class syllable task, with its shuffled control. Both broadband (1--40 Hz
+preprocessing) and 8--30 Hz. Same decoders, normalisation and
+statistics as exp05/exp07. Epochs are cached per subject (500 Hz, -0.5 to 0.2 s around speech
+onset, scalp channels common to every subject).
 
     python experiments/inner_speech/exp09_second_dataset.py --data-root F:/speech-decoding/eeg_classification
     python experiments/inner_speech/exp09_second_dataset.py --summarize
@@ -23,18 +23,17 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from experiments.channel_selection.channels import align_channels, scalp_channels
-from experiments.channel_selection.run_channel_selection import CONFIG_PATH, SFREQ, subject_epochs, task_labels
 from experiments.inner_speech.band import bandpass
+from experiments.inner_speech.channels import align_channels, scalp_channels
 from experiments.inner_speech.classical import CLASSICAL
 from experiments.inner_speech.exp05_honest_transfer import MODELS, append_rows
 from experiments.inner_speech.honest_transfer import DEFAULT_CONFIG, fit_and_score, summarize
 from experiments.inner_speech.loso import loso_folds
-from experiments.trackb_4word_floor.floor import shuffle_labels
 from src.data.datasets import StudyDataset
 from src.data.leakage import assert_disjoint
-from src.data.preprocessing import EEGPreprocessor
+from src.data.preprocessing import EEGPreprocessor, create_articulatory_labels, create_phoneme_labels
 from src.data.splits import split_indices
+from src.data.transforms import shuffle_labels
 from src.utils.run_config import ensure_same_run_config
 
 WITHIN_TASKS = ("place", "voicing")
@@ -43,6 +42,32 @@ WITHIN_ARMS = ("overt_only", "shuffle_overt")
 LOSO_ARMS = ("overt_loso", "shuffle_overt_loso")
 BANDS = {"broadband": None, "8_30": (8.0, 30.0)}
 RUN_KEYS = ["task", "band", "model", "seed"]
+CONFIG_PATH = Path(__file__).resolve().parents[1] / "journal_extension" / "config_journal.yaml"
+SFREQ = 500.0
+
+
+def subject_epochs(study: StudyDataset, subject_id: str, h_freq: float, cache: Path):
+    """One subject's epochs at SFREQ with its own channel names; cached per subject."""
+    if not cache.exists():
+        recording = study.loader.load_raw_eeg(subject_id)
+        step, remainder = divmod(recording.info["sfreq"], SFREQ)
+        if remainder or h_freq >= SFREQ / 2:
+            raise ValueError(f"Cannot decimate {recording.info['sfreq']} Hz epochs to {SFREQ} Hz without aliasing.")
+        subject = study.load_subject(subject_id)
+        if subject.data.shape[1] != len(recording.ch_names):
+            raise ValueError(f"{subject_id}: epochs have {subject.data.shape[1]} channels, recording lists {len(recording.ch_names)}.")
+        cache.parent.mkdir(parents=True, exist_ok=True)
+        subject.trial_info.assign(subject=subject_id).to_csv(cache.with_suffix(".csv"), index=False)
+        np.savez(cache, X=subject.data[:, :, ::int(step)], ch_names=np.array(recording.ch_names))
+        del study.subject_datasets[subject_id]
+    stored = np.load(cache, allow_pickle=False)
+    return stored["X"], pd.read_csv(cache.with_suffix(".csv")), stored["ch_names"].tolist()
+
+
+def task_labels(trial_info: pd.DataFrame, task: str, task_type: str) -> np.ndarray:
+    if task == "phoneme":
+        return create_phoneme_labels(trial_info, task_type)[0]
+    return create_articulatory_labels(trial_info, task)[0]
 SUMMARY_KEYS = ("task", "band", "model", "arm")
 
 

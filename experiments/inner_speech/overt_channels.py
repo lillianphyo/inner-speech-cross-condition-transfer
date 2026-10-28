@@ -16,7 +16,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
-from experiments.channel_selection.channels import KNOWLEDGE_SETS, MIRROR_NAMES, mirror, random_subsets
+from experiments.inner_speech.channels import KNOWLEDGE_SETS, MIRROR_NAMES, mirror, random_subsets
 
 MAX_DISTANCE_M = 0.025
 SETS = ("left_primary_strip", "left_sensorimotor")

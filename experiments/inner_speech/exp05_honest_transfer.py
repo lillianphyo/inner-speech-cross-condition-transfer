@@ -1,4 +1,4 @@
-"""Honest within-subject cross-condition transfer on ds003626 (TNSRE-2026-00496 re-run).
+"""Honest within-subject cross-condition transfer on ds003626.
 
 One CSV per subject under --out-dir, resumable per (window, model, seed). Run subjects in
 separate processes to parallelise; `--summarize` pools every per-subject CSV.

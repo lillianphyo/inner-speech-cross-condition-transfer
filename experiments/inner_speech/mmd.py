@@ -1,6 +1,6 @@
 """Maximum mean discrepancy penalty between network features of two unlabelled trial sets.
 
-Re-check of the TNSRE-2026-00496 domain-adaptation claim on the fixed loader: an RBF-kernel
+Re-check of the earlier domain-adaptation claim on the fixed loader: an RBF-kernel
 MMD (median-heuristic bandwidth) between the features of a random source batch and a random
 target batch is added to the classification loss at every step, as `train_model`'s regularizer.
 """

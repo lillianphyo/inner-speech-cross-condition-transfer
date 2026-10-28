@@ -14,7 +14,7 @@ from sklearn.pipeline import make_pipeline
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from experiments.inner_speech.exp02_cross_dataset import compute_metrics
-from experiments.trackb_4word_floor.floor import standardize
+from src.data.transforms import standardize
 
 CLASSICAL = ("CSP+LDA", "Riemannian")
 GRID = {"CSP+LDA": (4, 8, 16), "Riemannian": (0.1, 1.0, 10.0)}
