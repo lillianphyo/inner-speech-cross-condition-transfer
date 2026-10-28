@@ -33,7 +33,7 @@ Python 3.11.15, PyTorch 2.11.0 + CUDA 12.8, MNE-Python 1.12.1, scikit-learn 1.9.
 
 ```
 pip install -r requirements.txt
-python -m pytest tests -q          # 131 tests, includes the leakage and split checks
+python -m pytest tests -q          # 94 tests, includes the leakage and split checks
 ```
 
 ## 3. Splits, seeds and models
