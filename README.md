@@ -1,6 +1,6 @@
 # Cross-condition transfer learning for EEG-based inner speech classification
 
-Code, per-participant results and figure scripts for the manuscript *Cross-Condition Transfer Learning for EEG-Based Inner Speech Classification: A Controlled Evaluation of Neural Networks and Temporal Segmentation* (K. P. P. San, Y. Sugiura, T. Shimamura; in preparation for *Sensors*).
+Code, per-participant results and figure scripts for the manuscript *Cross-Condition Transfer Learning for EEG-Based Inner Speech Classification: A Controlled Evaluation of Neural Networks and Temporal Segmentation* (K. P. P. San, T. Shimamura; in preparation for *Sensors*).
 
 Archived release: v1.0.1, [doi:10.5281/zenodo.23717046](https://doi.org/10.5281/zenodo.23717046). All versions: [doi:10.5281/zenodo.23680583](https://doi.org/10.5281/zenodo.23680583).
 

@@ -7,7 +7,5 @@ repository-code: https://github.com/lillianphyo/inner-speech-cross-condition-tra
 authors:
   - family-names: San
     given-names: Khin Pyae Phyo
-  - family-names: Sugiura
-    given-names: Yosuke
   - family-names: Shimamura
     given-names: Tetsuya
